@@ -8,6 +8,7 @@
   <img src="https://komarev.com/ghpvc/?username=GIDROKS&label=Profile%20views&color=0e75b6&style=flat" alt="profile views" />
   <a href="https://www.linkedin.com/in/kirill-molochko/"><img src="https://img.shields.io/badge/LinkedIn-Kirill%20Molochko-0A66C2?logo=linkedin&logoColor=white" alt="LinkedIn" /></a>
   <a href="mailto:kirillmolochkowork@gmail.com"><img src="https://img.shields.io/badge/Email-kirillmolochkowork%40gmail.com-EA4335?logo=gmail&logoColor=white" alt="Email" /></a>
+  <a href="https://t.me/GlDROKS"><img src="https://img.shields.io/badge/Telegram-%40GlDROKS-26A5E4?logo=telegram&logoColor=white" alt="Telegram" /></a>
   <a href="https://docs.google.com/document/d/1KuTfxy28FKuqXwQSM9p8IRHg0HMubHOo7SNgeAG6ehE/edit?usp=sharing"><img src="https://img.shields.io/badge/CV-Google%20Docs-4285F4?logo=googledocs&logoColor=white" alt="CV" /></a>
 </p>
 
@@ -21,7 +22,7 @@
 - 🧪 At **HostAile Games** — shipped **Alchemy AI**, integrating GPT and DALL·E into a production mobile game
 - ⚙️ Recently — deepening **.NET microservices**, messaging, and AI-assisted internal tooling
 
-📍 Based in **Minsk, Belarus** · ☎️ +375 25 693-73-53  
+📍 Based in **Minsk, Belarus** · ☎️ +375 25 693-73-53 · ✈️ Telegram [@GlDROKS](https://t.me/GlDROKS)  
 🤝 Open to **Unity**, **.NET backend**, and **hybrid client–server** roles
 
 ---
@@ -93,4 +94,5 @@ Follow-up title from the same studio; I contributed to early development and tec
 <a href="https://github.com/GIDROKS" target="_blank" rel="noreferrer"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg" /><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/github.svg" width="32" height="32" alt="GitHub" /></picture></a>
 <a href="https://www.linkedin.com/in/kirill-molochko/" target="_blank" rel="noreferrer"><picture><source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin-dark.svg" /><source media="(prefers-color-scheme: light)" srcset="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" /><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/socials/linkedin.svg" width="32" height="32" alt="LinkedIn" /></picture></a>
 <a href="mailto:kirillmolochkowork@gmail.com" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/gmail/EA4335" width="32" height="32" alt="Email" /></a>
+<a href="https://t.me/GlDROKS" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/telegram/26A5E4" width="32" height="32" alt="Telegram @GlDROKS" /></a>
 </p>
