@@ -88,9 +88,13 @@ Follow-up title from the same studio; I contributed to early development and tec
 
 ---
 
-### 📊 Case study: LZ4 vs Brotli (client-side decompression)
+### 📊 Profiling, hot paths & network compression
 
-Production-style trade-off on **large static payloads** over the wire (same problem class as heavy “get static data” packets). I compared **Brotli** and **LZ4** in a **.NET Release** harness on fixed buffer sizes to bias for **lower decompression latency** on the client, accepting **slightly larger** compressed blobs where the profile called for it.
+I drive performance work with **JetBrains dotTrace** (CPU, wall time, waits, locks) and **JetBrains dotMemory** (allocations, dominant types, GC pressure). Findings become a tight backlog; fixes ship in **small iterations** with **before/after** snapshots on a **fixed** load profile (steady **60–120 s** traffic windows or **50k–100k** identical operations, depending on the scenario).
+
+#### Measured codec trade-off: LZ4 vs Brotli (.NET Release)
+
+Synthetic payloads **50 / 500 / 5 000 / 50 000 B**. Ratios are **how much faster LZ4 is than Brotli** for that step (compression **&lt; 1×** means LZ4 is slower).
 
 | Payload | LZ4 vs Brotli — compression | LZ4 vs Brotli — decompression |
 |--------:|----------------------------:|--------------------------------:|
@@ -99,10 +103,29 @@ Production-style trade-off on **large static payloads** over the wire (same prob
 | 5 000 B | ~0.8× (slower) | **~1.3× faster** |
 | 50 000 B | **~1.5× faster** | **~4.4× faster** |
 
-**Averages (same benchmark run):** compression ~**1.0×** (rough parity) · decompression ~**2.3× faster**. On the largest row, LZ4 is still smaller than raw input but **less compact than Brotli** — the win is **time-to-ready**, not bandwidth alone.
+**Same benchmark run — averages:** compression ~**1.0×** (rough parity) · decompression ~**2.3× faster**. LZ4 can be **slightly larger** than Brotli on bigger buffers; the payoff is **lower time-to-ready bytes** on the client—especially for heavy “static payload” style packets.
+
+#### Profiling outcomes (representative snapshots)
+
+| Area | Scenario / metric | Before | After | Delta |
+|------|-------------------|--------|-------|-------|
+| Compressor pooling + buffer reuse; remove hot-path `.Concat()` | **60 s** stress, **10k** sends — total allocated | ~1.35 GB | ~0.45 GB | **~−67%** |
+| Same | Gen0 collections / **60 s** | ~650 | ~120 | **~−82%** |
+| Same | `byte[]` instances (top), same scenario | ~11M | ~2.0M | **~−82%** |
+| `IServiceScope` per send → DI lifetimes (`singleton` / `scoped`) | Total allocated / **60 s** flood | ~1.65 GB | ~0.72 GB | **~−56%** |
+| Same | Mean send handler wall time | ~2.15 ms | ~1.05 ms | **~−51%** |
+| `lock` / `lock(this)` → `ConcurrentQueue` / `Channel<T>` | Lock wait (dotTrace) | ~68 ms/s | ~0.35 ms/s | **~−99%** |
+| Same | Message handling **p95** | ~9.5 ms | ~2.1 ms | **~−78%** |
+| Same | Throughput | ~7.8k msg/s | ~18.5k msg/s | **~+137%** |
+| `ConcurrentDictionary` scan → `TryGetValue` + map by `connectionId` | CPU in router hot spot | ~16% | ~3% | **~−81%** rel. |
+| Same | Allocations in that fragment / **5 min** | baseline | baseline | **~−45%** |
+| `async void` / missing `await` / `_isRun` races → `async Task` + awaits | **p99** / **2k** rapid events | ~52 ms | ~6 ms | **~−88%** |
+| Same | Peak thread-pool queue depth | ~180 | ~18 | **~−90%** |
+| `MediatR.Send` → `SendAsync` + `await` chain | Median / **8k** calls | ~2.45 ms | ~1.35 ms | **~−45%** |
+| Same | Dispatcher wrapper CPU (dotTrace) | baseline | baseline | **~−38%** |
 
 <details>
-<summary><strong>Screenshots & methodology</strong></summary>
+<summary><strong>LZ4 vs Brotli — screenshots & benchmark methodology</strong></summary>
 
 **Terminal — raw benchmark output**
 
@@ -112,9 +135,20 @@ Production-style trade-off on **large static payloads** over the wire (same prob
 
 ![LZ4 vs Brotli — summary table](./docs/images/compression-benchmark-summary-table.png)
 
-**How to read it:** Ratios compare wall time for **compress** / **decompress** on identical payload sizes plus resulting compressed length. Figures vary by CPU, OS power policy, and noise; use as **directional** evidence that **LZ4 pulls away on decompression for ~50 KB-class buffers**.
+**How to read it:** Ratios compare wall time for **compress** / **decompress** on identical payload sizes plus compressed size. Figures vary by CPU, OS power policy, and noise; treat as **directional** evidence that **LZ4 wins decompression hard on ~50 KB-class buffers**.
 
 **Method:** local `dotnet run` benchmark, **Release** configuration, synthetic payloads at 50 B / 500 B / 5 000 B / 50 000 B; measure compress time, decompress time, and compressed size for both codecs.
+
+</details>
+
+<details>
+<summary><strong>What I usually attach from dotTrace / dotMemory</strong></summary>
+
+| Tool | Typical artifacts |
+|------|-------------------|
+| **dotMemory** | Total allocated, Gen0/1/2 counts, dominant types (`byte[]`, `string`, …), type diff |
+| **dotTrace** | Wall time / CPU, hot paths, **lock waiting**, **p95/p99**, timeline |
+| **Micro-benchmark** | Codec comparison on fixed buffer sizes, **Release**, repeatable inputs |
 
 </details>
 
