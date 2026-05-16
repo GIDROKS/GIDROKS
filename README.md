@@ -38,15 +38,17 @@ I like owning a slice of the product vertically: from clarifying acceptance crit
 
 #### Unity client
 
-2D/3D · AR/VR · URP / HDRP / SRP · Splines · Addressables · new Input System · Mirror · Unity Netcode · SignalR bridges · NWH Vehicle Physics 2 · Zenject · VContainer · DOTween · UniTask · UniRx · R3 · MediatR
+2D/3D · AR/VR · URP / HDRP / SRP · Splines · Addressables · new Input System · Mirror · Unity Netcode · PurrNet · SignalR bridges · NWH Vehicle Physics 2 · Zenject · VContainer · DOTween · UniTask · UniRx · R3 · MediatR · MemoryPack · ParrelSync
 
 #### Backend & ops
 
-ASP.NET Core · EF Core · PostgreSQL · Redis · RabbitMQ · MassTransit · JWT · Serilog · OpenTelemetry · Grafana · Docker · GitHub Actions
+ASP.NET Core · EF Core · PostgreSQL · Redis · RabbitMQ · MassTransit · JWT · Serilog · OpenTelemetry · Grafana · Prometheus · Loki · Docker · GitHub Actions · Autofac
+
+Python · FastAPI · Streamlit · SQLite
 
 #### Practices
 
-SOLID · OOP · TDD · profiling (Unity Profiler, Rider, dotTrace, dotMemory) · ad / analytics SDK integration · Google Play Console delivery
+SOLID · OOP · ECS · DRY · KISS · TDD · CI/CD · Agile · Scrum · profiling (Unity Profiler, Rider, dotTrace, dotMemory) · ad / analytics SDK integration · Google Play Console delivery
 
 <p align="left">
 <a href="https://unity.com/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/unity/000000" width="36" height="36" alt="Unity" /></a>
