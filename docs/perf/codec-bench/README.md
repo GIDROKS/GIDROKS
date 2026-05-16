@@ -1,6 +1,6 @@
 # codec-bench
 
-Self-contained BenchmarkDotNet project behind the LZ4 vs Brotli table in the repo root README.
+Self-contained BenchmarkDotNet project behind the LZ4 vs Brotli table in the root [README.md](../../README.md) and the full write-up in [docs/perf/README.md](../README.md).
 
 ## Run
 
