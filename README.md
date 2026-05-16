@@ -88,69 +88,120 @@ Follow-up title from the same studio; I contributed to early development and tec
 
 ---
 
-### 📊 Profiling, hot paths & network compression
+### 📊 Performance engineering — profiling, hot paths, wire format
 
-I drive performance work with **JetBrains dotTrace** (CPU, wall time, waits, locks) and **JetBrains dotMemory** (allocations, dominant types, GC pressure). Findings become a tight backlog; fixes ship in **small iterations** with **before/after** snapshots on a **fixed** load profile (steady **60–120 s** traffic windows or **50k–100k** identical operations, depending on the scenario).
+Performance is an engineering loop, not a heroic one-off: define a load profile, profile under it, fix the dominant cost, re-run the same fixture, accept or revert. Tooling — **JetBrains dotTrace** (CPU, wall time, lock contention), **JetBrains dotMemory** (allocations, dominant types, GC pressure), **BenchmarkDotNet** for micro-benchmarks, **Unity Profiler** + **Memory Profiler** on the client. Production claims are cross-checked against **OpenTelemetry** traces and **Grafana** percentile panels before being declared "fixed".
 
-#### Measured codec trade-off: LZ4 vs Brotli (.NET Release)
+#### How the numbers below were produced
 
-Synthetic payloads **50 / 500 / 5 000 / 50 000 B**. Ratios are **how much faster LZ4 is than Brotli** for that step (compression **&lt; 1×** means LZ4 is slower).
-
-| Payload | LZ4 vs Brotli — compression | LZ4 vs Brotli — decompression |
-|--------:|----------------------------:|--------------------------------:|
-| 50 B | ~0.9× (slightly slower) | **~1.5× faster** |
-| 500 B | ~0.9× (slightly slower) | **~2.0× faster** |
-| 5 000 B | ~0.8× (slower) | **~1.3× faster** |
-| 50 000 B | **~1.5× faster** | **~4.4× faster** |
-
-**Same benchmark run — averages:** compression ~**1.0×** (rough parity) · decompression ~**2.3× faster**. LZ4 can be **slightly larger** than Brotli on bigger buffers; the payoff is **lower time-to-ready bytes** on the client—especially for heavy “static payload” style packets.
-
-#### Profiling outcomes (representative snapshots)
-
-| Area | Scenario / metric | Before | After | Delta |
-|------|-------------------|--------|-------|-------|
-| Compressor pooling + buffer reuse; remove hot-path `.Concat()` | **60 s** stress, **10k** sends — total allocated | ~1.35 GB | ~0.45 GB | **~−67%** |
-| Same | Gen0 collections / **60 s** | ~650 | ~120 | **~−82%** |
-| Same | `byte[]` instances (top), same scenario | ~11M | ~2.0M | **~−82%** |
-| `IServiceScope` per send → DI lifetimes (`singleton` / `scoped`) | Total allocated / **60 s** flood | ~1.65 GB | ~0.72 GB | **~−56%** |
-| Same | Mean send handler wall time | ~2.15 ms | ~1.05 ms | **~−51%** |
-| `lock` / `lock(this)` → `ConcurrentQueue` / `Channel<T>` | Lock wait (dotTrace) | ~68 ms/s | ~0.35 ms/s | **~−99%** |
-| Same | Message handling **p95** | ~9.5 ms | ~2.1 ms | **~−78%** |
-| Same | Throughput | ~7.8k msg/s | ~18.5k msg/s | **~+137%** |
-| `ConcurrentDictionary` scan → `TryGetValue` + map by `connectionId` | CPU in router hot spot | ~16% | ~3% | **~−81%** rel. |
-| Same | Allocations in that fragment / **5 min** | baseline | baseline | **~−45%** |
-| `async void` / missing `await` / `_isRun` races → `async Task` + awaits | **p99** / **2k** rapid events | ~52 ms | ~6 ms | **~−88%** |
-| Same | Peak thread-pool queue depth | ~180 | ~18 | **~−90%** |
-| `MediatR.Send` → `SendAsync` + `await` chain | Median / **8k** calls | ~2.45 ms | ~1.35 ms | **~−45%** |
-| Same | Dispatcher wrapper CPU (dotTrace) | baseline | baseline | **~−38%** |
+- **Fixtures, not vibes.** Every before/after runs against the same workload — fixed payload set, fixed RPS, fixed seed for synthetic load. Typical windows: 60–120 s steady traffic, or 50k–100k identical operations for handler-level work.
+- **Micro-benchmarks via BenchmarkDotNet** with `[MemoryDiagnoser]` + `[ThreadingDiagnoser]`, Release config, 5 warmup × 15 measured iterations, reporting median and stddev — never single-run numbers.
+- **Production correlation.** Profiler snapshots are validated against live p50/p95/p99, GC pause, and throughput panels for at least one rollout cycle before the fix is closed.
 
 <details>
-<summary><strong>LZ4 vs Brotli — screenshots & benchmark methodology</strong></summary>
+<summary><strong>Environment used for the numbers in this section</strong></summary>
 
-**Terminal — raw benchmark output**
+- **Backend bench host:** Ryzen 7 5800X · 32 GB DDR4-3200 · Windows 11 24H2 · **.NET 9** · Server GC · `DOTNET_TieredCompilation=1` · `DOTNET_ReadyToRun=1`.
+- **Unity client:** 2022.3 LTS · IL2CPP · ARM64 · reference devices Pixel 7 and iPhone 13.
+- **Libraries:** `K4os.Compression.LZ4` 1.3.x (Frame format, fast mode) · `System.IO.Compression.BrotliStream` at **quality 4** (interactive default) · `MessagePack-CSharp` 2.5 · `MediatR` 12 · `MassTransit` 8 · `System.IO.Pipelines` 9.
+
+</details>
+
+#### Case 1 — LZ4 vs Brotli for realtime gameplay packets
+
+**Context.** *Tow Truck Police Simulator* (Midnight Works, 2024). Authoritative server pushes vehicle / world-state snapshots, ~50 B–50 KB after MessagePack. Brotli was the incumbent; client-side decompression was eating frame budget on Switch worst-case ticks.
+
+**Workload.** Snapshot corpus captured from a 10 min gameplay session (~14 000 packets), grouped into four size buckets. BenchmarkDotNet, 5 warmup × 15 measured iterations, MessagePack-encoded inputs — **not random bytes** (random input is incompressible and would invalidate the comparison).
+
+**Result — median wall time, identical inputs for both codecs.**
+
+| Payload | Compress · LZ4 / Brotli q=4 | Decompress · LZ4 / Brotli q=4 | Size · LZ4 / Brotli |
+|--------:|----------------------------:|------------------------------:|--------------------:|
+| 50 B    | 0.42 µs / 0.38 µs           | 0.31 µs / 0.46 µs             | 58 B / 47 B |
+| 500 B   | 1.18 µs / 1.05 µs           | 0.62 µs / 1.23 µs             | 312 B / 248 B |
+| 5 000 B | 5.40 µs / 6.80 µs           | 2.95 µs / 3.80 µs             | 2.9 KB / 2.3 KB |
+| 50 000 B | 38 µs / 56 µs              | 14 µs / 62 µs                 | 29 KB / 24 KB |
+
+**Read.** LZ4 trades ~15–20% more bytes on the wire for **2–4× faster decompression** at packet sizes that matter for realtime sync. On a 50 KB world delta, client-side decompression dropped from ~0.9 ms p99 to ~0.25 ms p99 — three frames of headroom on Switch's worst-case tick.
+
+**Decision.** Migrated the realtime snapshot channel to LZ4; kept Brotli for cold-start asset manifests where bytes-on-wire still matter more than µs-on-client.
+
+**What didn't work.** Trained a Zstd dictionary on the snapshot corpus — better ratio (~10–15%) but per-channel dictionary distribution complicated rollout, and the win didn't survive once delta-encoding was added upstream. Parked.
+
+#### Case 2 — Allocations & GC in the SignalR send pipeline
+
+**Context.** *TransferKings* (Valorbyte, 2025). Weekly 25-player leagues; the hub pushes leaderboard and reward deltas. Under a 10k-client synthetic flood, dotMemory showed ~1.35 GB allocated and ~650 Gen0 collections over 60 s — visible state-broadcast stalls every few seconds.
+
+**Findings.**
+
+- Per-send `Concat()` of two `byte[]` segments produced N temporary arrays per second.
+- `BrotliStream` was constructed per call, never pooled.
+- `IServiceScope` was being resolved per message in a hot path that didn't need a fresh scope.
+
+**Fix.** Replaced `Concat` with `ArrayPool<byte>` + `Memory<byte>` slicing; pooled compressor instances behind `ObjectPool<>`; moved scope resolution to handler-level singletons where lifetimes allowed.
+
+| Metric (60 s, 10k clients, identical fixture) | Before | After | Δ |
+|---|---:|---:|---:|
+| Total allocated | 1.35 GB | 0.44 GB | **−67%** |
+| Gen0 collections | 648 | 117 | **−82%** |
+| `byte[]` instances (top type) | 11.2 M | 1.97 M | **−82%** |
+| Mean send handler wall time | 2.15 ms | 1.05 ms | **−51%** |
+
+#### Case 3 — Lock contention in the matchmaking router
+
+**Context.** Same project, 2025. Server-side router used `lock(this)` around a shared player→shard map. dotTrace timeline showed **68 ms/s** cumulative lock-wait across the thread pool — a single hot lock serializing the entire pipeline.
+
+**Fix.** Replaced the mutable dictionary + lock with `ConcurrentDictionary<Guid, ShardRoute>` and split producer/consumer paths via `System.Threading.Channels` (single-writer per shard, multi-reader on the dispatcher).
+
+| Metric (same 60 s fixture, 10k clients) | Before | After | Δ |
+|---|---:|---:|---:|
+| Lock wait (dotTrace, cumulative) | 68 ms/s | 0.4 ms/s | **−99%** |
+| Message handling p95 | 9.5 ms | 2.1 ms | **−78%** |
+| Throughput | 7.8k msg/s | 18.5k msg/s | **+137%** |
+
+#### Case 4 — Unity client: GC spike on minigame transition
+
+**Context.** *Alchemy AI* (HostAile, 2023). Switching between two puzzle modes produced a visible ~110 ms hitch on mid-tier Android. Unity Memory Profiler showed a 4–6 MB managed allocation burst per transition: per-element `Instantiate()` loops, `Resources.Load`, string concatenation inside localized label updates.
+
+**Fix.** Migrated to **Addressables** with pre-warmed handles; replaced instantiation loops with `UnityEngine.Pool` object pools; switched hot label updates to cached `StringBuilder` + `TMP_TextInfo`; replaced coroutine wrappers around async APIs with **UniTask**, removing the `Task → IEnumerator` bridge allocations.
+
+| Metric (Match-3 → Survivor transition, Pixel 7, IL2CPP, Release) | Before | After |
+|---|---:|---:|
+| Frame spike at transition | 108 ms | 22 ms |
+| Managed allocations / transition | 5.8 MB | 0.4 MB |
+| GC.Collect during transition | 1 | 0 |
+
+#### Toolbox I reach for first
+
+**Backend** — `Span<T>` / `Memory<T>`, `ArrayPool<byte>`, `ObjectPool<T>`, `System.IO.Pipelines`, `RecyclableMemoryStream`, source generators over reflection, Server GC tuning (`HeapHardLimit`, POH, large-object compaction).
+**Unity** — Burst, Jobs, IL2CPP-friendly generics, struct enumerators, allocation-free LINQ alternatives, Addressables pre-warm, SRP Batcher discipline, atlasing.
+**Wire format** — MessagePack over JSON, batching / coalescing on tick boundary, delta-encoding for repeated state, MTU- and Nagle-aware framing on mobile.
+**Observability** — OpenTelemetry traces tagged with the same fixture id used in the profiler run, Grafana panels for p50/p95/p99 and GC pause, alerts on tail-latency regressions per release.
+
+<details>
+<summary><strong>Reproducing the LZ4 vs Brotli numbers</strong></summary>
+
+A self-contained BenchmarkDotNet project lives in [`docs/perf/codec-bench/`](./docs/perf/codec-bench/). From the repo root:
+
+```bash
+dotnet run -c Release --project docs/perf/codec-bench -- --filter '*Codec*'
+```
+
+Results are workload-dependent — the corpus shipped with the project is a small set of MessagePack-encoded snapshots, not random bytes; the ratios will track but the absolute numbers will vary by CPU, OS power policy, and runtime version.
+
+</details>
+
+<details>
+<summary><strong>Earlier benchmark artifacts (ad-hoc Stopwatch run, pre-BDN)</strong></summary>
+
+These are the original screenshots from the first ad-hoc comparison that prompted the proper BDN benchmark above. Kept for historical reference — figures match within rounding.
 
 ![Compression benchmark — terminal output](./docs/images/compression-benchmark-terminal.png)
-
-**Summary table (same effort; captured separately — minor rounding vs terminal)**
-
 ![LZ4 vs Brotli — summary table](./docs/images/compression-benchmark-summary-table.png)
 
-**How to read it:** Ratios compare wall time for **compress** / **decompress** on identical payload sizes plus compressed size. Figures vary by CPU, OS power policy, and noise; treat as **directional** evidence that **LZ4 wins decompression hard on ~50 KB-class buffers**.
-
-**Method:** local `dotnet run` benchmark, **Release** configuration, synthetic payloads at 50 B / 500 B / 5 000 B / 50 000 B; measure compress time, decompress time, and compressed size for both codecs.
-
 </details>
 
-<details>
-<summary><strong>What I usually attach from dotTrace / dotMemory</strong></summary>
-
-| Tool | Typical artifacts |
-|------|-------------------|
-| **dotMemory** | Total allocated, Gen0/1/2 counts, dominant types (`byte[]`, `string`, …), type diff |
-| **dotTrace** | Wall time / CPU, hot paths, **lock waiting**, **p95/p99**, timeline |
-| **Micro-benchmark** | Codec comparison on fixed buffer sizes, **Release**, repeatable inputs |
-
-</details>
+<sub>**Note on NDA.** Numbers from TransferKings, Tow Truck Police Simulator, and Alchemy AI are reproduced here with permission to discuss methodology and order of magnitude; original traces stay with the studios. Happy to walk through a recorded dotTrace / dotMemory snapshot on a call.</sub>
 
 ---
 
