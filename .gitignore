@@ -1,0 +1,8 @@
+# .NET build outputs (repo-wide; nested projects keep their own rules too)
+**/bin/
+**/obj/
+BenchmarkDotNet.Artifacts/
+
+# IDE / tooling
+.vs/
+*.user
