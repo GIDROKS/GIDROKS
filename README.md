@@ -12,9 +12,9 @@
   <a href="https://docs.google.com/document/d/1KuTfxy28FKuqXwQSM9p8IRHg0HMubHOo7SNgeAG6ehE/view?usp=sharing"><img src="https://img.shields.io/badge/CV-Google%20Docs-4285F4?logo=googledocs&logoColor=white" alt="CV" /></a>
 </p>
 
-**At a glance** — Unity and .NET engineer with **5+ years** shipping gameplay and services for **Android, PC, iOS, and console**: modular client architecture (MV patterns, DI, async/reactive code), **ASP.NET Core** backends, observability, and CI/CD. Shipped **TransferKings** (Valorbyte), **Tow Truck Police Simulator** (Midnight Works), and **Alchemy AI** (HostAile Games, GPT/DALL·E). Strong focus on **profiling, wire format, and tail latency** (dotTrace, dotMemory, BenchmarkDotNet, OpenTelemetry). Based in **Minsk, Belarus**; **English** for day-to-day work, **Russian** native. Open to **Unity**, **.NET backend**, and **hybrid client–server** roles; **remote-friendly**, EU timezones. GitHub **GIDROKS** and Telegram **@GlDROKS** are the same handle (capital **I** vs lowercase **l** in the banner).
+**At a glance** — **5+ years** as a Unity and .NET engineer shipping gameplay and the services behind it (platforms are in the headline above). I lean hard on **profiling, wire format, and tail latency**, and on keeping large codebases evolvable across many releases. Open to **Unity**, **.NET backend**, and **hybrid client–server** roles; **remote-friendly**, EU timezones.
 
-**Contents** — [About me](#about-me) · [Tech stack](#tech-stack) · [Selected public work](#selected-public-work) · [Performance engineering](#performance-engineering) · [Contact](#contact)
+**Contents** — [About me](#about-me) · [Tech stack](#tech-stack) · [GitHub stats](#github-stats) · [Selected public work](#selected-public-work) · [Performance engineering](#performance-engineering) · [Contact](#contact)
 
 ---
 
@@ -22,14 +22,13 @@
 
 ### 👨‍💻 About me
 
-**5+ years** in software engineering. I build scalable gameplay and services for **Android, PC, iOS, and console**, combining **modular client architecture** (MV patterns, DI, async/reactive code) with **ASP.NET Core** backends, observability, and CI/CD. I'm comfortable owning features end to end, profiling hot paths, reviewing code, and mentoring in Scrum teams.
+I like owning a slice of the product vertically: from clarifying acceptance criteria and breaking work into reviewable chunks, to staying close to QA and design when behavior is ambiguous. I default to **measuring before rewriting** (a tight repro first, then traces or local profiling as the question demands) and to **small, reversible steps** in risky areas.
 
-- 🏎️ At **Midnight Works** — console racing and simulation titles (ports, performance, tooling)
-- 🧪 At **HostAile Games** — shipped **Alchemy AI**, integrating GPT and DALL·E into a production mobile game
-- ⚙️ Recently — deepening **.NET microservices**, messaging, and AI-assisted internal tooling
+- 🏎️ **Midnight Works** — large-console simulation and racing: gameplay modules that stay testable when design iterates, editor tooling teammates actually use, performance passes where every millisecond shows up in cert feedback, and shipping next to porting/QA in a predictable Scrum rhythm.
+- 🧪 **HostAile Games** — **Alchemy AI** in production: generative APIs in the live loop, rarity and events without turning the client into spaghetti, and keeping UX honest when models misbehave.
+- ⚙️ **Recently** — more **service backends**, messaging, and pragmatic internal tooling (including AI-assisted workflows where they shorten the feedback loop instead of adding ceremony).
 
-📍 Based in **Minsk, Belarus** · ✈️ Telegram [@GlDROKS](https://t.me/GlDROKS) · ☎️ Phone on request (see [CV](https://docs.google.com/document/d/1KuTfxy28FKuqXwQSM9p8IRHg0HMubHOo7SNgeAG6ehE/view?usp=sharing))  
-🤝 Open to **Unity**, **.NET backend**, and **hybrid client–server** roles
+📍 **Minsk, Belarus** · ☎️ Phone on request — see [CV](https://docs.google.com/document/d/1KuTfxy28FKuqXwQSM9p8IRHg0HMubHOo7SNgeAG6ehE/view?usp=sharing)
 
 ---
 
@@ -37,13 +36,16 @@
 
 ### 🛠️ Tech stack
 
-**Unity client**  
+#### Unity client
+
 2D/3D · AR/VR · URP / HDRP / SRP · Splines · Addressables · new Input System · Mirror · Unity Netcode · SignalR bridges · NWH Vehicle Physics 2 · Zenject · VContainer · DOTween · UniTask · UniRx · R3 · MediatR
 
-**Backend & ops**  
+#### Backend & ops
+
 ASP.NET Core · EF Core · PostgreSQL · Redis · RabbitMQ · MassTransit · JWT · Serilog · OpenTelemetry · Grafana · Docker · GitHub Actions
 
-**Practices**  
+#### Practices
+
 SOLID · OOP · TDD · profiling (Unity Profiler, Rider, dotTrace, dotMemory) · ad / analytics SDK integration · Google Play Console delivery
 
 <p align="left">
@@ -54,12 +56,26 @@ SOLID · OOP · TDD · profiling (Unity Profiler, Rider, dotTrace, dotMemory) ·
 <a href="https://www.docker.com/" target="_blank" rel="noreferrer"><img src="https://cdn.simpleicons.org/docker/2496ED" width="36" height="36" alt="Docker" /></a>
 <a href="https://firebase.google.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/firebase-colored.svg" width="36" height="36" alt="Firebase" /></a>
 <a href="https://github.com/hadashiA/VContainer" target="_blank" rel="noreferrer"><img src="https://img.shields.io/badge/VContainer-7B68EE?style=flat&logo=unity&logoColor=white" height="36" alt="VContainer" /></a>
-<a href="https://github.com/modesttree/Zenject" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/modesttree/Zenject/master/Documentation/Images/PNG_Zenject-colour%20(1).png" width="36" height="36" alt="Zenject" /></a>
+<a href="https://github.com/modesttree/Zenject" target="_blank" rel="noreferrer"><img src="https://img.shields.io/badge/Zenject-E91E63?style=flat&logo=unity&logoColor=white" height="36" alt="Zenject" /></a>
 <a href="https://github.com/Cysharp/R3" target="_blank" rel="noreferrer"><img src="https://img.shields.io/badge/R3-9C27B0?style=flat&logo=reactivex&logoColor=white" height="36" alt="R3" /></a>
 <a href="https://github.com/Cysharp/UniTask" target="_blank" rel="noreferrer"><img src="https://img.shields.io/badge/UniTask-FF9500?style=flat&logo=unity&logoColor=white" height="36" alt="UniTask" /></a>
+</p>
+
+**Design / Tools**
+
+<p align="left">
 <a href="https://www.blender.org/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/blender-colored.svg" width="36" height="36" alt="Blender" /></a>
 <a href="https://www.adobe.com/products/photoshop.html" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/photoshop-colored.svg" width="36" height="36" alt="Photoshop" /></a>
 <a href="https://www.figma.com/" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/danielcranney/readme-generator/main/public/icons/skills/figma-colored.svg" width="36" height="36" alt="Figma" /></a>
+</p>
+
+<a id="github-stats"></a>
+
+### 📈 GitHub stats
+
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=GIDROKS&layout=compact&hide_border=true" alt="Top languages" />
+  <img src="https://github-readme-stats.vercel.app/api?username=GIDROKS&show_icons=true&hide_border=true" alt="GitHub stats" />
 </p>
 
 ---
@@ -91,10 +107,6 @@ AI-driven alchemy puzzle: combine elements with **GPT** and **DALL·E**-powered 
 🔗 [Google Play](https://play.google.com/store/apps/details?id=com.hostelguys.alchemicai) · [App Store (iOS & iPadOS)](https://apps.apple.com/app/alchemy-ai-infinite-mix/id6466730288)
 
 <sub>Google Play is also the install surface for **Google Play Games on PC** for the same title. Store naming varies slightly by region (*Infinite Alchemy AI* vs *Alchemy AI: Infinite Mix*); the Android package id is the same — `com.hostelguys.alchemicai`. No separate Steam, Galaxy Store, or Amazon Appstore listing is published for this SKU at the moment.</sub>
-
-#### ⚗️ Alchemy Quest — *HostAile Games*
-
-Follow-up title from the same studio; I contributed to early development and tech experiments. Public store links are not yet listed — see CV for context.
 
 ---
 
