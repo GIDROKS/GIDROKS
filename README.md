@@ -109,9 +109,9 @@ Performance is an engineering loop, not a heroic one-off: define a load profile,
 
 #### Case 1 — LZ4 vs Brotli for realtime gameplay packets
 
-**Context.** *Tow Truck Police Simulator* (Midnight Works, 2024). Authoritative server pushes vehicle / world-state snapshots, ~50 B–50 KB after MessagePack. Brotli was the incumbent; client-side decompression was eating frame budget on Switch worst-case ticks.
+**Context.** Authoritative server pushing high-frequency gameplay state (vehicles, world deltas) serialized with MessagePack, typical compressed payloads from tens of bytes to tens of kilobytes. Brotli was the default on the wire; client-side decompression dominated frame budget on console-class worst-case ticks.
 
-**Workload.** Snapshot corpus captured from a 10 min gameplay session (~14 000 packets), grouped into four size buckets. BenchmarkDotNet, 5 warmup × 15 measured iterations, MessagePack-encoded inputs — **not random bytes** (random input is incompressible and would invalidate the comparison).
+**Workload.** Snapshot corpus from a ~10 min capture (~14k packets), grouped into four size buckets. BenchmarkDotNet, 5 warmup × 15 measured iterations, MessagePack-encoded inputs — **not random bytes** (random input is incompressible and would invalidate the comparison).
 
 **Result — median wall time, identical inputs for both codecs.**
 
@@ -130,7 +130,7 @@ Performance is an engineering loop, not a heroic one-off: define a load profile,
 
 #### Case 2 — Allocations & GC in the SignalR send pipeline
 
-**Context.** *TransferKings* (Valorbyte, 2025). Weekly 25-player leagues; the hub pushes leaderboard and reward deltas. Under a 10k-client synthetic flood, dotMemory showed ~1.35 GB allocated and ~650 Gen0 collections over 60 s — visible state-broadcast stalls every few seconds.
+**Context.** Realtime hub broadcasting small, frequent deltas (leaderboards, rewards, session state) to many concurrent connections. Under a 10k-client synthetic flood, dotMemory showed ~1.35 GB allocated and ~650 Gen0 collections over 60 s — visible stalls in the broadcast path every few seconds.
 
 **Findings.**
 
@@ -149,7 +149,7 @@ Performance is an engineering loop, not a heroic one-off: define a load profile,
 
 #### Case 3 — Lock contention in the matchmaking router
 
-**Context.** Same project, 2025. Server-side router used `lock(this)` around a shared player→shard map. dotTrace timeline showed **68 ms/s** cumulative lock-wait across the thread pool — a single hot lock serializing the entire pipeline.
+**Context.** High-traffic realtime routing tier under synthetic load (many concurrent clients, sustained messages). A server-side router held `lock(this)` around a shared player→shard map. dotTrace timeline showed **68 ms/s** cumulative lock-wait across the thread pool — one hot lock serializing the whole dispatch path.
 
 **Fix.** Replaced the mutable dictionary + lock with `ConcurrentDictionary<Guid, ShardRoute>` and split producer/consumer paths via `System.Threading.Channels` (single-writer per shard, multi-reader on the dispatcher).
 
@@ -161,7 +161,7 @@ Performance is an engineering loop, not a heroic one-off: define a load profile,
 
 #### Case 4 — Unity client: GC spike on minigame transition
 
-**Context.** *Alchemy AI* (HostAile, 2023). Switching between two puzzle modes produced a visible ~110 ms hitch on mid-tier Android. Unity Memory Profiler showed a 4–6 MB managed allocation burst per transition: per-element `Instantiate()` loops, `Resources.Load`, string concatenation inside localized label updates.
+**Context.** Transition between two heavy UI / gameplay modes caused a ~110 ms hitch on mid-tier Android. Unity Memory Profiler showed a 4–6 MB managed allocation burst per transition: per-element `Instantiate()` loops, `Resources.Load`, string concatenation inside localized label updates.
 
 **Fix.** Migrated to **Addressables** with pre-warmed handles; replaced instantiation loops with `UnityEngine.Pool` object pools; switched hot label updates to cached `StringBuilder` + `TMP_TextInfo`; replaced coroutine wrappers around async APIs with **UniTask**, removing the `Task → IEnumerator` bridge allocations.
 
@@ -201,7 +201,7 @@ These are the original screenshots from the first ad-hoc comparison that prompte
 
 </details>
 
-<sub>**Note on NDA.** Numbers from TransferKings, Tow Truck Police Simulator, and Alchemy AI are reproduced here with permission to discuss methodology and order of magnitude; original traces stay with the studios. Happy to walk through a recorded dotTrace / dotMemory snapshot on a call.</sub>
+<sub>**Note on confidentiality.** Figures here illustrate methodology and order of magnitude from real engagements; raw traces and customer-specific datasets stay with the respective teams. Happy to walk through a sanitized or recorded dotTrace / dotMemory snapshot on a call.</sub>
 
 ---
 
