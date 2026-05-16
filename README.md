@@ -88,6 +88,38 @@ Follow-up title from the same studio; I contributed to early development and tec
 
 ---
 
+### 📊 Case study: LZ4 vs Brotli (client-side decompression)
+
+Production-style trade-off on **large static payloads** over the wire (same problem class as heavy “get static data” packets). I compared **Brotli** and **LZ4** in a **.NET Release** harness on fixed buffer sizes to bias for **lower decompression latency** on the client, accepting **slightly larger** compressed blobs where the profile called for it.
+
+| Payload | LZ4 vs Brotli — compression | LZ4 vs Brotli — decompression |
+|--------:|----------------------------:|--------------------------------:|
+| 50 B | ~0.9× (slightly slower) | **~1.5× faster** |
+| 500 B | ~0.9× (slightly slower) | **~2.0× faster** |
+| 5 000 B | ~0.8× (slower) | **~1.3× faster** |
+| 50 000 B | **~1.5× faster** | **~4.4× faster** |
+
+**Averages (same benchmark run):** compression ~**1.0×** (rough parity) · decompression ~**2.3× faster**. On the largest row, LZ4 is still smaller than raw input but **less compact than Brotli** — the win is **time-to-ready**, not bandwidth alone.
+
+<details>
+<summary><strong>Screenshots & methodology</strong></summary>
+
+**Terminal — raw benchmark output**
+
+![Compression benchmark — terminal output](./docs/images/compression-benchmark-terminal.png)
+
+**Summary table (same effort; captured separately — minor rounding vs terminal)**
+
+![LZ4 vs Brotli — summary table](./docs/images/compression-benchmark-summary-table.png)
+
+**How to read it:** Ratios compare wall time for **compress** / **decompress** on identical payload sizes plus resulting compressed length. Figures vary by CPU, OS power policy, and noise; use as **directional** evidence that **LZ4 pulls away on decompression for ~50 KB-class buffers**.
+
+**Method:** local `dotnet run` benchmark, **Release** configuration, synthetic payloads at 50 B / 500 B / 5 000 B / 50 000 B; measure compress time, decompress time, and compressed size for both codecs.
+
+</details>
+
+---
+
 ### 🌐 Connect with me
 
 <p align="left">
