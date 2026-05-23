@@ -78,6 +78,7 @@ SOLID · OOP · ECS · DRY · KISS · TDD · CI/CD · Agile · Scrum · profilin
 ### 📈 GitHub stats
 
 <p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=GIDROKS&layout=compact&hide_border=true" alt="Top languages" />
   <img src="https://github-readme-stats.vercel.app/api?username=GIDROKS&show_icons=true&hide_border=true" alt="GitHub stats" />
 </p>
 
@@ -117,9 +118,9 @@ AI-driven alchemy puzzle: combine elements with **GPT** and **DALL·E**-powered 
 
 ### Webconto - platform & internal tools
 
-> Recent company work around 1C consulting, database diagnostics, procurement monitoring, and internal knowledge management. Source repositories are private; metrics and screenshots are published with permission from the company owner.
+> Recent company work around 1C consulting, database diagnostics, procurement monitoring, and internal knowledge management. Source repositories are private. Screenshots are published with permission; sensitive repository and customer data are not disclosed. Full project index: [docs/projects/README.md](docs/projects/README.md).
 
-#### DatabaseAnalyzer — *Webconto*
+#### Database Analyzer — *Webconto*
 
 Monitoring and diagnostic platform for **SQL Server 2019 / PostgreSQL + 1C:Enterprise**. I built the .NET analyzer service, snapshot collectors, rule engine, SQLite history, REST/UI surface, Grafana/VictoriaMetrics/Loki pipeline, Telegram alert routing, and 1C technological-journal correlation.
 
@@ -127,7 +128,7 @@ Monitoring and diagnostic platform for **SQL Server 2019 / PostgreSQL + 1C:Enter
 
 🔎 [Full write-up](docs/projects/database-analyzer.md) · screenshots: analyzer UI, Grafana dashboards, Telegram alerts
 
-#### TenderFinder — *Webconto*
+#### Tender Finder — *Webconto*
 
 Tender-monitoring system for the Belarus market: async source connectors, normalized SQLite cache, profile-based matching, Streamlit operator UI, FastAPI endpoints, webhook delivery, and Telegram forum-topic notifications.
 
@@ -135,7 +136,7 @@ Tender-monitoring system for the Belarus market: async source connectors, normal
 
 🔎 [Full write-up](docs/projects/tender-finder.md) · screenshots: Streamlit dashboard, tender list, sync status, profile matching
 
-#### WebConto KB — *Webconto*
+#### Knowledge Base Portal — *Webconto*
 
 Internal knowledge-base portal for 1C consulting materials. It stores Markdown documents, Q/A, attachments, review drafts, audit history, and usage analytics, while a separate AI consultant reads approved content through REST.
 
@@ -143,11 +144,11 @@ Internal knowledge-base portal for 1C consulting materials. It stores Markdown d
 
 🔎 [Full write-up](docs/projects/webconto-kb.md) · screenshots: portal dashboard, documents, Q/A catalog
 
-#### Webconto AI consultant — *coming soon*
+#### AI Consultant — *coming soon*
 
-The fourth Webconto project will fill the LLM-facing layer around WebConto KB: dataset sync, Dify integration, answer flows, usage telemetry, and operator feedback. The slot is already reserved in [docs/projects/](docs/projects/).
+The fourth project will fill the LLM-facing layer around the Knowledge Base Portal: dataset sync, Dify integration, answer flows, usage telemetry, and operator feedback. The slot is already reserved in [docs/projects/](docs/projects/).
 
-<sub>Private source code stays private. Portfolio materials here are sanitized and published with explicit permission from the company owner.</sub>
+<sub>Private source code stays private. Screenshots are published with permission; sensitive repository and customer data are not disclosed.</sub>
 
 ---
 
