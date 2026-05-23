@@ -1,6 +1,6 @@
-# TenderFinder
+# Tender Finder
 
-TenderFinder is a tender-monitoring system for the Belarus market. It collects
+Tender Finder is a tender-monitoring system for the Belarus market. It collects
 government and corporate procurement notices from several sources, normalizes
 them into one model, stores them locally, matches them against configurable
 profiles, and sends relevant results through Streamlit, REST, webhooks, and
@@ -9,7 +9,7 @@ Telegram.
 The project was built for teams that take part in tenders and do not want to
 manually check many procurement sites every day.
 
-<sub>Published with permission from the company owner. Metrics and screenshots are sanitized for portfolio use; source repositories remain private.</sub>
+<sub>Published with permission from the company owner. Screenshots are published with permission; sensitive repository and customer data are not disclosed. Source repositories remain private.</sub>
 
 ## Problem
 
@@ -77,10 +77,10 @@ controlled notification stream.
 <details open>
 <summary><strong>Streamlit UI</strong></summary>
 
-![TenderFinder home dashboard](../images/webconto/tender-finder/home-dashboard.jpg)
-![TenderFinder tender list](../images/webconto/tender-finder/tenders-list.jpg)
-![TenderFinder sync status](../images/webconto/tender-finder/sync-status.jpg)
-![TenderFinder profile matches](../images/webconto/tender-finder/profile-matches.jpg)
+![Tender Finder home dashboard](../images/webconto/tender-finder/home-dashboard.jpg)
+![Tender Finder tender list](../images/webconto/tender-finder/tenders-list.jpg)
+![Tender Finder sync status](../images/webconto/tender-finder/sync-status.jpg)
+![Tender Finder profile matches](../images/webconto/tender-finder/profile-matches.jpg)
 
 </details>
 

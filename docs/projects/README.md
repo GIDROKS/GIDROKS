@@ -1,19 +1,19 @@
-# Webconto project write-ups
+# Project write-ups
 
 This folder holds deeper notes for the Webconto projects summarized in the root
 [README.md](../../README.md). The root README keeps the recruiter-facing version
 short; these pages keep the architecture, metrics, and screenshots.
 
-<sub>Published with permission from the company owner. Metrics and screenshots are sanitized for portfolio use; source repositories remain private.</sub>
+<sub>Published with permission from the company owner. Screenshots are published with permission; sensitive repository and customer data are not disclosed. Source repositories remain private.</sub>
 
 ## Projects
 
 | Project | Status | Short description |
 |---------|--------|-------------------|
-| [DatabaseAnalyzer](database-analyzer.md) | Ready | SQL Server/PostgreSQL observability and diagnostic platform for 1C environments |
-| [TenderFinder](tender-finder.md) | Ready | Belarus tender aggregator with Streamlit UI, FastAPI, SQLite cache, and Telegram delivery |
-| [WebConto KB](webconto-kb.md) | Ready | Internal knowledge-base portal for 1C consulting, built as the source of truth for an AI consultant |
-| [Webconto AI consultant](webconto-ai-consultant.md) | Coming soon | LLM-facing assistant layer connected to WebConto KB |
+| [Database Analyzer](database-analyzer.md) | Ready | SQL Server/PostgreSQL observability and diagnostic platform for 1C environments |
+| [Tender Finder](tender-finder.md) | Ready | Belarus tender aggregator with Streamlit UI, FastAPI, SQLite cache, and Telegram delivery |
+| [Knowledge Base Portal](webconto-kb.md) | Ready | Internal knowledge-base portal for 1C consulting, built as the source of truth for an AI consultant |
+| [AI Consultant](webconto-ai-consultant.md) | Coming soon | LLM-facing assistant layer connected to the Knowledge Base Portal |
 
 ## How this layer is organized
 

@@ -1,6 +1,6 @@
-# DatabaseAnalyzer
+# Database Analyzer
 
-DatabaseAnalyzer is a monitoring and diagnostic platform for Microsoft SQL
+Database Analyzer is a monitoring and diagnostic platform for Microsoft SQL
 Server 2019 and PostgreSQL installations used with 1C:Enterprise. It combines a
 standard observability stack with a custom .NET 8 analyzer that collects DMV and
 Query Store snapshots, opens findings, exposes REST/UI endpoints, and maps SQL
@@ -9,7 +9,7 @@ load back to 1C operations and users.
 The goal was practical: reduce MTTR for database incidents without installing
 agents on client workstations or changing 1C application code.
 
-<sub>Published with permission from the company owner. Metrics and screenshots are sanitized for portfolio use; source repositories remain private.</sub>
+<sub>Published with permission from the company owner. Screenshots are published with permission; sensitive repository and customer data are not disclosed. Source repositories remain private.</sub>
 
 ## Problem
 
@@ -80,26 +80,26 @@ flowchart LR
 <details open>
 <summary><strong>Analyzer UI</strong></summary>
 
-![DatabaseAnalyzer findings](../images/webconto/database-analyzer/custom-findings.jpg)
-![DatabaseAnalyzer I/O top](../images/webconto/database-analyzer/custom-io-top.jpg)
-![DatabaseAnalyzer top consumers](../images/webconto/database-analyzer/custom-top-consumers.jpg)
+![Database Analyzer findings](../images/webconto/database-analyzer/custom-findings.jpg)
+![Database Analyzer I/O top](../images/webconto/database-analyzer/custom-io-top.jpg)
+![Database Analyzer top consumers](../images/webconto/database-analyzer/custom-top-consumers.jpg)
 
 </details>
 
 <details>
 <summary><strong>Grafana dashboards</strong></summary>
 
-![DatabaseAnalyzer Grafana dashboard list](../images/webconto/database-analyzer/grafana-dashboard-list.jpg)
-![DatabaseAnalyzer Grafana I/O top](../images/webconto/database-analyzer/grafana-io-top.jpg)
-![DatabaseAnalyzer Grafana PostgreSQL overview](../images/webconto/database-analyzer/grafana-postgres-overview.jpg)
+![Database Analyzer Grafana dashboard list](../images/webconto/database-analyzer/grafana-dashboard-list.jpg)
+![Database Analyzer Grafana I/O top](../images/webconto/database-analyzer/grafana-io-top.jpg)
+![Database Analyzer Grafana PostgreSQL overview](../images/webconto/database-analyzer/grafana-postgres-overview.jpg)
 
 </details>
 
 <details>
 <summary><strong>Telegram alert routing</strong></summary>
 
-![DatabaseAnalyzer Telegram MSSQL alert](../images/webconto/database-analyzer/telegram-mssql-alert.jpg)
-![DatabaseAnalyzer Telegram PostgreSQL alert](../images/webconto/database-analyzer/telegram-postgres-alert.jpg)
+![Database Analyzer Telegram MSSQL alert](../images/webconto/database-analyzer/telegram-mssql-alert.jpg)
+![Database Analyzer Telegram PostgreSQL alert](../images/webconto/database-analyzer/telegram-postgres-alert.jpg)
 
 </details>
 

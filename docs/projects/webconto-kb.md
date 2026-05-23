@@ -1,12 +1,12 @@
-# WebConto KB
+# Knowledge Base Portal
 
-WebConto KB is an internal knowledge-base portal for 1C consulting materials. It
+Knowledge Base Portal is an internal knowledge-base portal for 1C consulting materials. It
 stores Markdown documents, question-answer pairs, attachments, drafts, audit
 history, and usage analytics. It also acts as the source of truth for a separate
 AI consultant service: the LLM layer reads approved content through REST and
 sends usage events back to the KB.
 
-<sub>Published with permission from the company owner. Metrics and screenshots are sanitized for portfolio use; source repositories remain private.</sub>
+<sub>Published with permission from the company owner. Screenshots are published with permission; sensitive repository and customer data are not disclosed. Source repositories remain private.</sub>
 
 ## Problem
 
@@ -64,9 +64,9 @@ Implemented integration points include:
 <details open>
 <summary><strong>Knowledge-base portal</strong></summary>
 
-![WebConto KB home dashboard](../images/webconto/webconto-kb/home-dashboard.jpg)
-![WebConto KB documents](../images/webconto/webconto-kb/documents.jpg)
-![WebConto KB question-answer catalog](../images/webconto/webconto-kb/qa.jpg)
+![Knowledge Base Portal home dashboard](../images/webconto/webconto-kb/home-dashboard.jpg)
+![Knowledge Base Portal documents](../images/webconto/webconto-kb/documents.jpg)
+![Knowledge Base Portal question-answer catalog](../images/webconto/webconto-kb/qa.jpg)
 
 </details>
 

@@ -12,7 +12,7 @@ This repository is primarily a **GitHub profile / portfolio** surface: the root 
 | [docs/perf/README.md](docs/perf/README.md) | Full performance write-up: methodology, Cases 1–4, toolbox, confidentiality note, screenshot appendix |
 | [docs/perf/codec-bench/](docs/perf/codec-bench/) | BenchmarkDotNet project used to reproduce the codec table |
 | [docs/images/](docs/images/) | Static images referenced from docs |
-| [docs/images/webconto/](docs/images/webconto/) | Sanitized Webconto screenshots grouped by project slug |
+| [docs/images/webconto/](docs/images/webconto/) | Webconto screenshots grouped by project slug; sensitive repository and customer data are not disclosed |
 
 ## Commands
 

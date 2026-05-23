@@ -8,13 +8,13 @@ Facts about this repository’s **documentation, project write-ups, and benchmar
 
 | Resource | Contents |
 |----------|----------|
-| [projects/README.md](projects/README.md) | Index for Webconto project write-ups and the reserved fourth-project slot |
+| [projects/README.md](projects/README.md) | Index for project write-ups and the reserved fourth-project slot |
 | [projects/database-analyzer.md](projects/database-analyzer.md) | SQL Server/PostgreSQL + 1C observability and diagnostic platform |
 | [projects/tender-finder.md](projects/tender-finder.md) | Belarus tender aggregator with Streamlit UI, FastAPI, SQLite cache, and Telegram delivery |
 | [projects/webconto-kb.md](projects/webconto-kb.md) | Knowledge-base portal used as the source of truth for an AI consultant |
-| [projects/webconto-ai-consultant.md](projects/webconto-ai-consultant.md) | Placeholder for the fourth Webconto project |
+| [projects/webconto-ai-consultant.md](projects/webconto-ai-consultant.md) | Placeholder for the fourth project |
 
-**Inputs:** Sanitized portfolio briefs and screenshots supplied by the project owner. Private repository URLs are intentionally not published in this public repo.
+**Inputs:** Portfolio briefs and screenshots supplied by the project owner. Screenshots are published with permission; sensitive repository and customer data are not disclosed. Private repository URLs are intentionally not published in this public repo.
 
 **Outputs:** Short project cards in the root [README.md](../README.md), full write-ups under [projects/](projects/), and screenshots under [images/webconto/](images/webconto/).
 
