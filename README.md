@@ -14,7 +14,7 @@
 
 **At a glance** — **5+ years** as a Unity and .NET engineer shipping gameplay and the services behind it (platforms are in the headline above). I lean hard on **profiling, wire format, and tail latency**, and on keeping large codebases evolvable across many releases. Open to **Unity**, **.NET backend**, and **hybrid client–server** roles; **remote-friendly**, EU timezones.
 
-**Contents** — [About me](#about-me) · [Tech stack](#tech-stack) · [GitHub stats](#github-stats) · [Selected public work](#selected-public-work) · [Performance engineering](#performance-engineering) · [Contact](#contact)
+**Contents** — [About me](#about-me) · [Tech stack](#tech-stack) · [GitHub stats](#github-stats) · [Selected public work](#selected-public-work) · [Webconto platform work](#webconto-platform-work) · [Performance engineering](#performance-engineering) · [Contact](#contact)
 
 ---
 
@@ -26,7 +26,7 @@ I like owning a slice of the product vertically: from clarifying acceptance crit
 
 - 🏎️ **Midnight Works** — large-console simulation and racing: gameplay modules that stay testable when design iterates, editor tooling teammates actually use, performance passes where every millisecond shows up in cert feedback, and shipping next to porting/QA in a predictable Scrum rhythm.
 - 🧪 **HostAile Games** — **Alchemy AI** in production: generative APIs in the live loop, rarity and events without turning the client into spaghetti, and keeping UX honest when models misbehave.
-- ⚙️ **Recently** — more **service backends**, messaging, and pragmatic internal tooling (including AI-assisted workflows where they shorten the feedback loop instead of adding ceremony).
+- ⚙️ **Webconto** — 1C consulting tools, database observability, tender monitoring, and internal knowledge-base systems: small production backends with enough metrics, tests, and operator UI to survive real daily use.
 
 📍 **Minsk, Belarus** · ☎️ Phone on request — see [CV](https://docs.google.com/document/d/1KuTfxy28FKuqXwQSM9p8IRHg0HMubHOo7SNgeAG6ehE/view?usp=sharing)
 
@@ -45,6 +45,8 @@ I like owning a slice of the product vertically: from clarifying acceptance crit
 ASP.NET Core · EF Core · PostgreSQL · Redis · RabbitMQ · MassTransit · JWT · Serilog · OpenTelemetry · Grafana · Prometheus · Loki · Docker · GitHub Actions · Autofac
 
 Python · FastAPI · Streamlit · SQLite
+
+VictoriaMetrics · Alertmanager · Telegraf · Cloudflare Tunnel · Telegram Bot API · 1C integrations
 
 #### Practices
 
@@ -76,7 +78,6 @@ SOLID · OOP · ECS · DRY · KISS · TDD · CI/CD · Agile · Scrum · profilin
 ### 📈 GitHub stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=GIDROKS&layout=compact&hide_border=true" alt="Top languages" />
   <img src="https://github-readme-stats.vercel.app/api?username=GIDROKS&show_icons=true&hide_border=true" alt="GitHub stats" />
 </p>
 
@@ -109,6 +110,44 @@ AI-driven alchemy puzzle: combine elements with **GPT** and **DALL·E**-powered 
 🔗 [Google Play](https://play.google.com/store/apps/details?id=com.hostelguys.alchemicai) · [App Store (iOS & iPadOS)](https://apps.apple.com/app/alchemy-ai-infinite-mix/id6466730288)
 
 <sub>Google Play is also the install surface for **Google Play Games on PC** for the same title. Store naming varies slightly by region (*Infinite Alchemy AI* vs *Alchemy AI: Infinite Mix*); the Android package id is the same — `com.hostelguys.alchemicai`. No separate Steam, Galaxy Store, or Amazon Appstore listing is published for this SKU at the moment.</sub>
+
+---
+
+<a id="webconto-platform-work"></a>
+
+### Webconto - platform & internal tools
+
+> Recent company work around 1C consulting, database diagnostics, procurement monitoring, and internal knowledge management. Source repositories are private; metrics and screenshots are published with permission from the company owner.
+
+#### DatabaseAnalyzer — *Webconto*
+
+Monitoring and diagnostic platform for **SQL Server 2019 / PostgreSQL + 1C:Enterprise**. I built the .NET analyzer service, snapshot collectors, rule engine, SQLite history, REST/UI surface, Grafana/VictoriaMetrics/Loki pipeline, Telegram alert routing, and 1C technological-journal correlation.
+
+**~19k LOC · 12 C# projects · 21 diagnostic rules · 29 alert rules · 5 Grafana dashboards · 20+ API endpoints**
+
+🔎 [Full write-up](docs/projects/database-analyzer.md) · screenshots: analyzer UI, Grafana dashboards, Telegram alerts
+
+#### TenderFinder — *Webconto*
+
+Tender-monitoring system for the Belarus market: async source connectors, normalized SQLite cache, profile-based matching, Streamlit operator UI, FastAPI endpoints, webhook delivery, and Telegram forum-topic notifications.
+
+**41,307 cached tenders · 6 active data sources · 11 profiles · ~9.8k LOC · 114 pytest tests · 23 CLI commands**
+
+🔎 [Full write-up](docs/projects/tender-finder.md) · screenshots: Streamlit dashboard, tender list, sync status, profile matching
+
+#### WebConto KB — *Webconto*
+
+Internal knowledge-base portal for 1C consulting materials. It stores Markdown documents, Q/A, attachments, review drafts, audit history, and usage analytics, while a separate AI consultant reads approved content through REST.
+
+**40+ REST operations · 11 UI screens · ~170 tests · SQLite FTS5 search · >=85% backend coverage target · 512 MB RAM deploy floor**
+
+🔎 [Full write-up](docs/projects/webconto-kb.md) · screenshots: portal dashboard, documents, Q/A catalog
+
+#### Webconto AI consultant — *coming soon*
+
+The fourth Webconto project will fill the LLM-facing layer around WebConto KB: dataset sync, Dify integration, answer flows, usage telemetry, and operator feedback. The slot is already reserved in [docs/projects/](docs/projects/).
+
+<sub>Private source code stays private. Portfolio materials here are sanitized and published with explicit permission from the company owner.</sub>
 
 ---
 

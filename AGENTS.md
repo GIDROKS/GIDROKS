@@ -1,15 +1,18 @@
 # Repository guide
 
-This repository is primarily a **GitHub profile / portfolio** surface: the root [README.md](README.md) is the public bio, project list, and a shortened performance narrative.
+This repository is primarily a **GitHub profile / portfolio** surface: the root [README.md](README.md) is the public bio, project list, Webconto project summaries, and a shortened performance narrative.
 
 ## Layout
 
 | Path | Role |
 |------|------|
-| [README.md](README.md) | Profile headline, contacts, tech stack, shipped titles, **Case 1** (LZ4 vs Brotli) summary + link to full perf notes |
+| [README.md](README.md) | Profile headline, contacts, tech stack, shipped titles, Webconto summaries, **Case 1** (LZ4 vs Brotli) summary + link to full perf notes |
+| [docs/projects/README.md](docs/projects/README.md) | Index for Webconto project write-ups and the reserved fourth-project slot |
+| [docs/projects/*.md](docs/projects/) | Full Webconto write-ups: architecture, metrics, screenshots, and privacy notes |
 | [docs/perf/README.md](docs/perf/README.md) | Full performance write-up: methodology, Cases 1–4, toolbox, confidentiality note, screenshot appendix |
 | [docs/perf/codec-bench/](docs/perf/codec-bench/) | BenchmarkDotNet project used to reproduce the codec table |
-| [docs/images/](docs/images/) | Static images referenced from the perf docs |
+| [docs/images/](docs/images/) | Static images referenced from docs |
+| [docs/images/webconto/](docs/images/webconto/) | Sanitized Webconto screenshots grouped by project slug |
 
 ## Commands
 

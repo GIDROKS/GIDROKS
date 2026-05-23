@@ -2,7 +2,25 @@
 
 ## Purpose
 
-Facts about this repository’s **documentation and benchmarks**, aimed at contributors or future-you. Product/engineering narrative for hiring lives in the root [README.md](../README.md).
+Facts about this repository’s **documentation, project write-ups, and benchmarks**, aimed at contributors or future-you. Product/engineering narrative for hiring lives in the root [README.md](../README.md).
+
+## Project docs
+
+| Resource | Contents |
+|----------|----------|
+| [projects/README.md](projects/README.md) | Index for Webconto project write-ups and the reserved fourth-project slot |
+| [projects/database-analyzer.md](projects/database-analyzer.md) | SQL Server/PostgreSQL + 1C observability and diagnostic platform |
+| [projects/tender-finder.md](projects/tender-finder.md) | Belarus tender aggregator with Streamlit UI, FastAPI, SQLite cache, and Telegram delivery |
+| [projects/webconto-kb.md](projects/webconto-kb.md) | Knowledge-base portal used as the source of truth for an AI consultant |
+| [projects/webconto-ai-consultant.md](projects/webconto-ai-consultant.md) | Placeholder for the fourth Webconto project |
+
+**Inputs:** Sanitized portfolio briefs and screenshots supplied by the project owner. Private repository URLs are intentionally not published in this public repo.
+
+**Outputs:** Short project cards in the root [README.md](../README.md), full write-ups under [projects/](projects/), and screenshots under [images/webconto/](images/webconto/).
+
+**Config / env:** The project docs are static Markdown. No runtime configuration is required.
+
+**Where to look for errors:** Broken relative links, missing screenshots, or stale metric counts in the Markdown files above.
 
 ## Performance docs
 
@@ -21,4 +39,12 @@ Facts about this repository’s **documentation and benchmarks**, aimed at contr
 
 ## Images
 
-[images/](images/) holds PNGs referenced from [perf/README.md](perf/README.md) (historical ad-hoc benchmark screenshots).
+[images/](images/) holds static images referenced from docs.
+
+| Path | Contents |
+|------|----------|
+| [images/](images/) | Historical codec benchmark PNGs referenced from [perf/README.md](perf/README.md) |
+| [images/webconto/database-analyzer/](images/webconto/database-analyzer/) | Analyzer UI, Grafana, and Telegram screenshots |
+| [images/webconto/tender-finder/](images/webconto/tender-finder/) | Streamlit tender-monitoring screenshots |
+| [images/webconto/webconto-kb/](images/webconto/webconto-kb/) | Knowledge-base portal screenshots |
+| [images/webconto/ai-consultant/](images/webconto/ai-consultant/) | Reserved for the fourth Webconto project |
