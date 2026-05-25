@@ -27,7 +27,9 @@ BDN handles warmup, repetition, outlier removal and produces a markdown summary 
 
 ## What the corpus actually is
 
-A deterministic, MessagePack-encoded "snapshot" stream resembling gameplay traffic — entity ids, recurring kind strings, float clusters. Generated with a fixed seed so results are reproducible across machines.
+A deterministic, MessagePack-encoded snapshot document: a list of gameplay-like entities plus a `pad` byte field used only to hit the exact bucket size (50 / 500 / 5 000 / 50 000 B). Entity ids, recurring kind strings, and float clusters give compressibility close to real traffic. Generated with a fixed seed so results are reproducible across machines.
+
+The payload is always valid MessagePack — bucket sizes are tuned via the `pad` field, not by trimming serialized bytes.
 
 **Random bytes are not used on purpose:** random input is incompressible and would make both codecs look identical, which would invalidate the comparison.
 

@@ -98,39 +98,63 @@ public class CodecBenchmarks
     /// Deterministic, MessagePack-encoded "snapshot" corpus with realistic repetition
     /// (entity ids, recurring strings, float clusters). Reproduces compressibility close
     /// to what we see on gameplay traffic without shipping a real capture.
+    /// Exact bucket sizes use a <c>pad</c> field inside the document — never raw trimming.
     /// </summary>
     private static byte[] MakeSnapshotCorpus(int targetBytes, int seed)
     {
         var rng = new Random(seed);
         var entities = new List<object>();
-        var written = 0;
         var template = new[] { "vehicle", "pedestrian", "prop", "trigger", "vfx" };
 
-        while (written < targetBytes)
+        while (SerializeSnapshotCorpus(entities, padSize: 0).Length < targetBytes)
         {
-            var entity = new
+            entities.Add(MakeSnapshotEntity(rng, template));
+
+            if (SerializeSnapshotCorpus(entities, padSize: 0).Length > targetBytes)
             {
-                id = rng.Next(1, 5_000),
-                kind = template[rng.Next(template.Length)],
-                x = (float)(rng.NextDouble() * 1024 - 512),
-                y = (float)(rng.NextDouble() * 8),
-                z = (float)(rng.NextDouble() * 1024 - 512),
-                vx = (float)(rng.NextDouble() * 4 - 2),
-                vy = 0f,
-                vz = (float)(rng.NextDouble() * 4 - 2),
-                state = rng.Next(0, 8),
-            };
-            entities.Add(entity);
-            var bytes = MessagePackSerializer.Serialize(entity, Options);
-            written += bytes.Length;
+                entities.RemoveAt(entities.Count - 1);
+                break;
+            }
         }
 
-        var blob = MessagePackSerializer.Serialize(entities, Options);
-        // Trim or pad to exactly the requested size — easier to compare buckets.
-        if (blob.Length >= targetBytes) return blob.AsSpan(0, targetBytes).ToArray();
+        var padSize = 0;
+        for (var attempt = 0; attempt < 64; attempt++)
+        {
+            var blob = SerializeSnapshotCorpus(entities, padSize);
+            var delta = targetBytes - blob.Length;
+            if (delta == 0)
+            {
+                MessagePackSerializer.Deserialize<object>(blob, Options);
+                return blob;
+            }
 
-        var padded = new byte[targetBytes];
-        Buffer.BlockCopy(blob, 0, padded, 0, blob.Length);
-        return padded;
+            padSize += delta;
+            if (padSize < 0)
+            {
+                throw new InvalidOperationException(
+                    $"Snapshot corpus for {targetBytes} B cannot fit after {entities.Count} entities.");
+            }
+        }
+
+        throw new InvalidOperationException(
+            $"Could not converge on a valid {targetBytes} B MessagePack snapshot corpus.");
     }
+
+    private static object MakeSnapshotEntity(Random rng, string[] template) => new
+    {
+        id = rng.Next(1, 5_000),
+        kind = template[rng.Next(template.Length)],
+        x = (float)(rng.NextDouble() * 1024 - 512),
+        y = (float)(rng.NextDouble() * 8),
+        z = (float)(rng.NextDouble() * 1024 - 512),
+        vx = (float)(rng.NextDouble() * 4 - 2),
+        vy = 0f,
+        vz = (float)(rng.NextDouble() * 4 - 2),
+        state = rng.Next(0, 8),
+    };
+
+    private static byte[] SerializeSnapshotCorpus(IReadOnlyList<object> entities, int padSize) =>
+        MessagePackSerializer.Serialize(
+            new { entities, pad = padSize == 0 ? Array.Empty<byte>() : new byte[padSize] },
+            Options);
 }
