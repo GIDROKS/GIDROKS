@@ -144,9 +144,13 @@ Internal knowledge-base portal for 1C consulting materials. It stores Markdown d
 
 🔎 [Full write-up](docs/projects/webconto-kb.md) · screenshots: portal dashboard, documents, Q/A catalog
 
-#### AI Consultant — *coming soon*
+#### AI Consultant — *Webconto*
 
-The fourth project will fill the LLM-facing layer around the Knowledge Base Portal: dataset sync, Dify integration, answer flows, usage telemetry, and operator feedback. The slot is already reserved in [docs/projects/](docs/projects/).
+LLM-facing layer around the Knowledge Base Portal: Telegram and web chat over **Dify + Ollama** RAG, incremental KB→Dify sync, usage telemetry back to the portal, expert Q/A enrichment from support topics, and a Streamlit dashboard for bot quality, KB usage, and call analytics (STT, optional diarization, KB-gap views).
+
+**~22k LOC · ~680 pytest tests · 5 dashboard sections · 12 call-analytics tabs · Telegram + web chat**
+
+🔎 [Full write-up](docs/projects/webconto-ai-consultant.md) · screenshots: dashboard, web chat, bot metrics, call analytics (to be added)
 
 <sub>Private source code stays private. Screenshots are published with permission; sensitive repository and customer data are not disclosed.</sub>
 

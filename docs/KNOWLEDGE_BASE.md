@@ -8,11 +8,11 @@ Facts about this repository’s **documentation, project write-ups, and benchmar
 
 | Resource | Contents |
 |----------|----------|
-| [projects/README.md](projects/README.md) | Index for project write-ups and the reserved fourth-project slot |
+| [projects/README.md](projects/README.md) | Index for Webconto project write-ups |
 | [projects/database-analyzer.md](projects/database-analyzer.md) | SQL Server/PostgreSQL + 1C observability and diagnostic platform |
 | [projects/tender-finder.md](projects/tender-finder.md) | Belarus tender aggregator with Streamlit UI, FastAPI, SQLite cache, and Telegram delivery |
 | [projects/webconto-kb.md](projects/webconto-kb.md) | Knowledge-base portal used as the source of truth for an AI consultant |
-| [projects/webconto-ai-consultant.md](projects/webconto-ai-consultant.md) | Placeholder for the fourth project |
+| [projects/webconto-ai-consultant.md](projects/webconto-ai-consultant.md) | LLM layer: Telegram/web chat, Dify RAG, KB sync, usage telemetry, call analytics dashboard |
 
 **Inputs:** Portfolio briefs and screenshots supplied by the project owner. Screenshots are published with permission; sensitive repository and customer data are not disclosed. Private repository URLs are intentionally not published in this public repo.
 
@@ -47,4 +47,4 @@ Facts about this repository’s **documentation, project write-ups, and benchmar
 | [images/webconto/database-analyzer/](images/webconto/database-analyzer/) | Analyzer UI, Grafana, and Telegram screenshots |
 | [images/webconto/tender-finder/](images/webconto/tender-finder/) | Streamlit tender-monitoring screenshots |
 | [images/webconto/webconto-kb/](images/webconto/webconto-kb/) | Knowledge-base portal screenshots |
-| [images/webconto/ai-consultant/](images/webconto/ai-consultant/) | Reserved for the fourth Webconto project |
+| [images/webconto/ai-consultant/](images/webconto/ai-consultant/) | AI Consultant screenshots (add when ready) |

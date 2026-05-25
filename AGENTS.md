@@ -7,7 +7,7 @@ This repository is primarily a **GitHub profile / portfolio** surface: the root 
 | Path | Role |
 |------|------|
 | [README.md](README.md) | Profile headline, contacts, tech stack, shipped titles, Webconto summaries, **Case 1** (LZ4 vs Brotli) summary + link to full perf notes |
-| [docs/projects/README.md](docs/projects/README.md) | Index for Webconto project write-ups and the reserved fourth-project slot |
+| [docs/projects/README.md](docs/projects/README.md) | Index for Webconto project write-ups (four projects, including AI Consultant) |
 | [docs/projects/*.md](docs/projects/) | Full Webconto write-ups: architecture, metrics, screenshots, and privacy notes |
 | [docs/perf/README.md](docs/perf/README.md) | Full performance write-up: methodology, Cases 1–4, toolbox, confidentiality note, screenshot appendix |
 | [docs/perf/codec-bench/](docs/perf/codec-bench/) | BenchmarkDotNet project used to reproduce the codec table |

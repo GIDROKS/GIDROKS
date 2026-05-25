@@ -13,11 +13,11 @@ short; these pages keep the architecture, metrics, and screenshots.
 | [Database Analyzer](database-analyzer.md) | Ready | SQL Server/PostgreSQL observability and diagnostic platform for 1C environments |
 | [Tender Finder](tender-finder.md) | Ready | Belarus tender aggregator with Streamlit UI, FastAPI, SQLite cache, and Telegram delivery |
 | [Knowledge Base Portal](webconto-kb.md) | Ready | Internal knowledge-base portal for 1C consulting, built as the source of truth for an AI consultant |
-| [AI Consultant](webconto-ai-consultant.md) | Coming soon | LLM-facing assistant layer connected to the Knowledge Base Portal |
+| [AI Consultant](webconto-ai-consultant.md) | Ready | LLM-facing assistant: Telegram/web chat, Dify RAG, KB sync, usage telemetry, call analytics |
 
 ## How this layer is organized
 
 - Each project page describes the problem, shipped scope, stack, metrics, and screenshots.
 - Screenshots live under `docs/images/webconto/{project-slug}/`.
 - The private repositories are not linked from this public portfolio.
-- The AI consultant has a stable slot now, so the fourth project can be added without reshuffling the README.
+- Screenshot paths follow `docs/images/webconto/{project-slug}/` (AI Consultant images can be added when ready).
